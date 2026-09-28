@@ -1,24 +1,31 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Layers, Paintbrush, Sun, Lightbulb } from 'lucide-react';
+import { Layers, Lightbulb, Star } from 'lucide-react';
 import ServiceCard from '../components/services/ServiceCard';
 
 const ServicesPage = () => {
   const services = [
     {
       icon: Layers,
-      title: 'Retapițare & Elemente Plastic',
+      title: 'Retapițare plafon & vopsire elemente de plastic',
       description: 'Oferim servicii complete de retapițare a plafoanelor auto și recondiționăm sau personalizăm elementele de plastic din interior (inclusiv parasolare). Redăm un aspect curat, unitar și elegant interiorului mașinii tale.',
       features: ['Materiale premium (textil, alcantara)', 'Vopsire ornamente și mânere plastic', 'Retapițare sau vopsire parasolare', 'Garanție pe manoperă'],
       reversed: false
     },
     {
       icon: Lightbulb,
-      title: 'Lumini Ambientale RGB',
+      title: 'Lumini ambientale',
       description: 'Adaugă un plus de atmosferă și lux cu sistemele noastre de iluminare ambientală Addressable RGB, complet personalizabile și perfect integrate în panourile mașinii.',
       features: ['Iluminare LED Addressable RGB', 'Control inteligent din telefon (Aplicație)', 'Multiple zone: bord, uși, sub scaune', 'Montaj fără fire vizibile'],
       reversed: true
+    },
+    {
+      icon: Star,
+      title: 'Plafon înstelat',
+      description: 'Oferă interiorului tău un aspect de lux absolut. Instalăm cu precizie sute de fire de fibră optică în plafon pentru a simula un cer înstelat impresionant, controlabil din telefon.',
+      features: ['Fibră optică premium', 'Control culori și intensitate', 'Efecte dinamice de sclipire (Twinkle)', 'Integrare invizibilă pe timpul zilei'],
+      reversed: false
     }
   ];
 

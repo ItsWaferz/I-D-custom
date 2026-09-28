@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, ArrowRight } from 'lucide-react';
-import { materials, parasolarOptions, plasticOptions, ambientZones, getZoneDiscount, currency, carSizes } from './calculatorData';
+import { materials, parasolarOptions, plasticOptions, ambientZones, steleData, getZoneDiscount, currency, carSizes } from './calculatorData';
 
-export default function PriceSummary({ retapitareSelections, luminiSelections }) {
+export default function PriceSummary({ retapitareSelections, luminiSelections, steleSelections }) {
   const items = [];
 
   // Car Size extra cost (only if it has an extra cost > 0)
@@ -56,16 +56,37 @@ export default function PriceSummary({ retapitareSelections, luminiSelections })
     }
   });
 
-  // Calculate discount
+  // Stele - selected package
+  let steleDiscountAmount = 0;
+  let steleDiscountPercent = 0;
+  if (steleSelections && steleSelections.packageId) {
+    const stelePackage = steleData.find((p) => p.id === steleSelections.packageId);
+    if (stelePackage) {
+      const basePrice = stelePackage.originalPrice || stelePackage.price;
+      steleDiscountAmount = basePrice - stelePackage.price;
+      
+      if (basePrice > 0 && steleDiscountAmount > 0) {
+        steleDiscountPercent = Math.round((steleDiscountAmount / basePrice) * 100);
+      }
+
+      items.push({
+        label: `Plafon Înstelat — ${stelePackage.name}`,
+        price: basePrice,
+        category: 'stele',
+      });
+    }
+  }
+
+  // Calculate discount RGB
   const zoneCount = luminiSelections.zones.length;
   const discountPercent = getZoneDiscount(zoneCount);
   const luminiSubtotal = items
     .filter((i) => i.category === 'lumini')
     .reduce((sum, i) => sum + i.price, 0);
-  const discountAmount = Math.round(luminiSubtotal * discountPercent / 100);
+  const luminiDiscountAmount = Math.round(luminiSubtotal * discountPercent / 100);
 
   const subtotalBrut = items.reduce((sum, item) => sum + item.price, 0);
-  const total = subtotalBrut - discountAmount;
+  const total = subtotalBrut - luminiDiscountAmount - steleDiscountAmount;
 
   // Build the message for the contact form
   const getSelectedOptionsText = () => {
@@ -84,6 +105,15 @@ export default function PriceSummary({ retapitareSelections, luminiSelections })
       });
     }
 
+    // Add stele items
+    const steleItems = items.filter(i => i.category === 'stele');
+    if (steleItems.length > 0) {
+      text += `\nCer Înstelat:\n`;
+      steleItems.forEach(item => {
+        text += `- ${item.label.replace('Plafon Înstelat — ', '')}\n`;
+      });
+    }
+
     if (total > 0) {
       text += `\nTotal estimat în calculator: ${total} ${currency}`;
     }
@@ -97,7 +127,8 @@ export default function PriceSummary({ retapitareSelections, luminiSelections })
   // Validation logic
   const hasRetapitareValid = Boolean(retapitareSelections.material && retapitareSelections.carSize);
   const hasLuminiValid = zoneCount > 0;
-  const canSubmit = hasRetapitareValid || hasLuminiValid;
+  const hasSteleValid = Boolean(steleSelections && steleSelections.packageId);
+  const canSubmit = hasRetapitareValid || hasLuminiValid || hasSteleValid;
 
   return (
     <div className="sticky top-24">
@@ -155,10 +186,10 @@ export default function PriceSummary({ retapitareSelections, luminiSelections })
               ))
             )}
 
-            {/* Discount line */}
-            {discountAmount > 0 && (
+            {/* RGB Discount line */}
+            {luminiDiscountAmount > 0 && (
               <motion.div
-                key="discount"
+                key="rgb-discount"
                 initial={{ opacity: 0, x: 20 }}
                 animate={{ opacity: 1, x: 0 }}
                 exit={{ opacity: 0, x: -20 }}
@@ -171,7 +202,32 @@ export default function PriceSummary({ retapitareSelections, luminiSelections })
                   </span>
                 </div>
                 <span className="text-sm font-medium text-green-400 whitespace-nowrap">
-                  -{discountAmount} {currency}
+                  -{luminiDiscountAmount} {currency}
+                </span>
+              </motion.div>
+            )}
+
+            {/* Stele Discount line */}
+            {steleDiscountAmount > 0 && (
+              <motion.div
+                key="stele-discount"
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                className={`flex justify-between items-start gap-2 ${
+                  luminiDiscountAmount > 0 
+                    ? 'pt-1' 
+                    : 'pt-2 border-t border-dashed border-dark-border'
+                }`}
+              >
+                <div className="flex items-start gap-2">
+                  <div className="w-2 h-2 rounded-full mt-1.5 bg-green-400" />
+                  <span className="text-sm text-green-400">
+                    Reducere pachet înstelat {steleDiscountPercent > 0 ? `(-${steleDiscountPercent}%)` : ''}
+                  </span>
+                </div>
+                <span className="text-sm font-medium text-green-400 whitespace-nowrap">
+                  -{steleDiscountAmount} {currency}
                 </span>
               </motion.div>
             )}

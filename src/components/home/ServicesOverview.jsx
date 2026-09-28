@@ -6,14 +6,14 @@ import { Link } from 'react-router-dom';
 const services = [
   {
     id: 1,
-    title: 'Retapițare & Elemente Plastic',
-    description: 'Refacem complet plafonul și recondiționăm elementele din interior (plastice, parasolare) folosind materiale premium pentru un finisaj elegant.',
+    title: 'Retapițare plafon & vopsire elemente de plastic',
+    description: 'Refacem complet plafonul și recondiționăm elementele din interior folosind materiale premium pentru un finisaj elegant și unitar.',
     icon: Layers,
   },
   {
     id: 2,
-    title: 'Lumini Ambientale RGB',
-    description: 'Modernizează interiorul cu sisteme de iluminat ambiental Addressable RGB. Culori vibrante și personalizabile pe zone.',
+    title: 'Lumini ambientale & plafon înstelat',
+    description: 'Transformă complet atmosfera din mașina ta cu sisteme de iluminat Addressable RGB și un spectaculos plafon cu efect de cer înstelat.',
     icon: Lightbulb,
   }
 ];

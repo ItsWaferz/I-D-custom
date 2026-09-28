@@ -1,13 +1,15 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Layers, Lightbulb } from 'lucide-react';
+import { Layers, Lightbulb, Star } from 'lucide-react';
 import TabRetapitare from './TabRetapitare';
 import TabLumini from './TabLumini';
+import TabStele from './TabStele';
 import PriceSummary from './PriceSummary';
 
 const tabs = [
   { id: 'retapitare', label: 'Retapitare & Vopsire', icon: Layers },
   { id: 'lumini', label: 'Lumini Ambientale', icon: Lightbulb },
+  { id: 'stele', label: 'Plafon Înstelat', icon: Star },
 ];
 
 export default function Calculator() {
@@ -22,13 +24,16 @@ export default function Calculator() {
     zones: [],
     ledType: 'argb',
   });
+  const [steleSelections, setSteleSelections] = useState({
+    packageId: null,
+  });
 
   return (
     <div className="flex flex-col lg:flex-row gap-8">
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {/* Tabs */}
-        <div className="flex border-b border-dark-border mb-8">
+        <div className="flex border-b border-dark-border mb-8 overflow-x-auto overflow-y-hidden no-scrollbar">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -36,12 +41,12 @@ export default function Calculator() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors duration-300 cursor-pointer ${isActive ? 'text-gold' : 'text-light-muted hover:text-light'
+                className={`relative flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors duration-300 cursor-pointer whitespace-nowrap ${isActive ? 'text-gold' : 'text-light-muted hover:text-light'
                   }`}
               >
                 <Icon className="w-4 h-4" />
                 <span className="hidden sm:inline">{tab.label}</span>
-                <span className="sm:hidden">{tab.id === 'retapitare' ? 'Retapitare' : 'Lumini'}</span>
+                <span className="sm:hidden">{tab.id === 'retapitare' ? 'Retapitare' : tab.id === 'lumini' ? 'Lumini' : 'Stele'}</span>
                 {isActive && (
                   <motion.div
                     layoutId="activeTab"
@@ -63,15 +68,22 @@ export default function Calculator() {
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.2 }}
           >
-            {activeTab === 'retapitare' ? (
+            {activeTab === 'retapitare' && (
               <TabRetapitare
                 selections={retapitareSelections}
                 onUpdate={setRetapitareSelections}
               />
-            ) : (
+            )}
+            {activeTab === 'lumini' && (
               <TabLumini
                 selections={luminiSelections}
                 onUpdate={setLuminiSelections}
+              />
+            )}
+            {activeTab === 'stele' && (
+              <TabStele
+                selections={steleSelections}
+                onUpdate={setSteleSelections}
               />
             )}
           </motion.div>
@@ -83,6 +95,7 @@ export default function Calculator() {
         <PriceSummary
           retapitareSelections={retapitareSelections}
           luminiSelections={luminiSelections}
+          steleSelections={steleSelections}
         />
       </div>
     </div>

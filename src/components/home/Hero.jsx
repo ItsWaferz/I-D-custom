@@ -41,8 +41,8 @@ const Hero = () => {
           </motion.h1>
 
           <motion.p variants={item} className="text-base sm:text-lg md:text-2xl text-light-muted mb-10 sm:mb-8 max-w-xl mx-auto font-light">
-            <span className="hidden sm:inline">Retapițare plafoane • Vopsire elemente plastic • Lumini ambientale</span>
-            <span className="sm:hidden">Retapițare plafoane • Vopsire elemente plastic<br />Lumini ambientale</span>
+            <span className="hidden sm:inline">Retapițare plafon & vopsire elemente de plastic • Lumini ambientale & plafon înstelat</span>
+            <span className="sm:hidden">Retapițare plafon & vopsire elemente de plastic<br />Lumini ambientale & plafon înstelat</span>
           </motion.p>
 
           <motion.div variants={item} className="flex flex-col sm:flex-row items-center justify-center gap-3 w-full max-w-xs sm:max-w-none mx-auto">
