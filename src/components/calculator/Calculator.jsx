@@ -33,7 +33,7 @@ export default function Calculator() {
       {/* Main Content */}
       <div className="flex-1 min-w-0">
         {/* Tabs */}
-        <div className="flex border-b border-dark-border mb-8 overflow-x-auto overflow-y-hidden no-scrollbar">
+        <div className="flex w-full border-b border-dark-border mb-8">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -41,7 +41,7 @@ export default function Calculator() {
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`relative flex items-center gap-2 px-6 py-4 text-sm font-medium transition-colors duration-300 cursor-pointer whitespace-nowrap ${isActive ? 'text-gold' : 'text-light-muted hover:text-light'
+                className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-4 px-2 sm:px-6 text-[13px] sm:text-sm font-medium transition-colors duration-300 cursor-pointer flex-1 sm:flex-none ${isActive ? 'text-gold' : 'text-light-muted hover:text-light'
                   }`}
               >
                 <Icon className="w-4 h-4" />
